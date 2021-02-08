@@ -1,0 +1,30 @@
+Creación de BD y tablas que lo integran.
+
+create database nuxiba;
+
+use nuxiba;
+
+create table logDial (
+idLlamada varchar(10) not null primary key,
+fechaDeLlamada datetime,
+tiempoDialogo smallint,
+telefono varchar(10),
+fktipoDeLlamada varchar(15)
+foreign key(fktipoDeLlamada) references costos(tipoDeLlamada));
+
+create table costos (
+tipoDeLlamada varchar(15) not null primary key,
+costo decimal(10,4));
+
+Para agregar los datos del archivo DatosPracticaSQL.xlsx, convertí las hojas en .CSV para importar los datos desde MySQL WorkBench.
+
+
+Sentencias SQL solicitadas.
+Que muestre los registros con tipo de llamada Cel LD durante el mes febrero.
+select fechaDeLlamada, fktipoDeLlamada from logdial where fechaDeLlamada between '2020-02-01 00:00:00' and '2020-02-028 00:00:00';
+
+Que indique el promedio de tiempo de dialogo de las llamadas con tipo Cel LD durante el mes de febrero.
+select AVG(tiempoDialogo) from logDial where fechaDeLlamada between '2020-02-01 00:00:00' and '2020-02-028 00:00:00' and fktipoDeLlamada = 'Cel LD';
+
+Que muestre el número en minutos de dialogo (tomando tiempoDialogo que está en segundos) y el costo de todas las llamadas del mes de enero.
+select fechaDeLlamada,costo,tiempoDialogo %(24*60*60)%(60*60)/60 as minutos from logdial inner join costos on logdial.fktipoDeLlamada = costos.tipoDeLlamada where fechaDeLlamada between  '2020-01-01 00:00:00' and '2020-01-31 00:00:00';
